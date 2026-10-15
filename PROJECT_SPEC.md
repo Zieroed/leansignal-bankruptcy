@@ -9,4 +9,4 @@ Primary metric: PR-AUC
 
 Required MVP: Reproducible leakage-safe baseline comparison, one feature-selection experiment, one preprocessing test, results, README, and explanation
 
-Non-goals: Web app, deep learning, stock prediction, exhaustive model tuning, second feature-selection method
+Non-goals: Web app, deep learning, stock prediction, exhaustive model tuning, second feature-selection method.
