@@ -1,6 +1,6 @@
 from load_data import load_data
 from audit_data import describe_data, print_first_five_rows, print_missing_values_info, print_class_distribution
-from split_data import split_data, print_class_distribution
+from split_data import split_data, print_class_distribution, impute_missing_values
 
 def main():
     print("Loading data..")
@@ -32,6 +32,7 @@ def main():
             print("y_train shape:", y_train.shape)
             print("y_test shape:", y_test.shape)
             print_class_distribution(y_train, y_test)
+            X_train_imputed, X_test_imputed = impute_missing_values(X_train, X_test)
         elif choice == '0':
             print("Exiting...")
             break
