@@ -23,4 +23,4 @@ def impute_missing_values(X_train, X_test):
     print("Total number of missing values per column:")
     print(f"Train missing values:{np.isnan(X_train_imputed).sum()}")
     print(f"Test missing values:{np.isnan(X_test_imputed).sum()}")
-    return X_train_imputed, X_test
+    return X_train_imputed, X_test_imputed
