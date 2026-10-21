@@ -3,6 +3,7 @@ from audit_data import describe_data, print_first_five_rows, print_missing_value
 from split_data import split_data, split_train_test, print_per_class_distribution, impute_missing_values
 from dummy_classifier import predict_most_frequent
 from metrics_evaluator import compute_precision, compute_recall, compute_f1_score, compute_roc_auc, compute_average_precision, compute_accuracy
+from logistic_regression import train_and_predict_logistic_regression
 
 def print_x_y_shapes(X_dev, X_test, y_dev, y_test, x, y):
     print(f"{x} shape: {X_dev.shape}")
@@ -67,6 +68,9 @@ def main():
             print(f"ROC AUC score: {round(compute_roc_auc(y_val, dummy_predictions) * 100, 2)}%")
             print(f"Average Precision score: {round(compute_average_precision(y_val, dummy_predictions) * 100, 2)}%")
             print(f"Accuracy score: {round(compute_accuracy(y_val, dummy_predictions) * 100, 2)}%")
+
+            print_line_separator()
+            train_and_predict_logistic_regression(X_train_imputed, X_val_imputed, y_train)
 
         elif choice == '0':
             print("Exiting...")
