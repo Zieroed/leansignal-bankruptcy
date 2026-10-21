@@ -1,6 +1,7 @@
 from load_data import load_data
 from audit_data import describe_data, print_first_five_rows, print_missing_values_info, print_class_distribution
 from split_data import split_data, split_train_test, print_per_class_distribution, impute_missing_values
+from dummy_classifier import predict_most_frequent
 
 def print_x_y_shapes(X_dev, X_test, y_dev, y_test, x, y):
     print(f"{x} shape: {X_dev.shape}")
@@ -48,6 +49,15 @@ def main():
             X_train, X_val, y_train, y_val = split_train_test(X_dev, y_dev)
             print_x_y_shapes(X_train, X_val, y_train, y_val , "Train", "Validation")
             print_per_class_distribution(y_train, y_val)
+
+            print_line_separator()
+            print("Imputing missing values in the training and validation sets...")
+            X_train_imputed, X_val_imputed = impute_missing_values(X_train, X_val)
+
+            print_line_separator()
+            print("Running dummy classifier on the imputed training and validation sets...")
+            dummy_predictions, confusion_mat = predict_most_frequent(X_train_imputed, X_val_imputed, y_train, y_val)
+
 
         elif choice == '0':
             print("Exiting...")

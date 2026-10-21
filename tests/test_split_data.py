@@ -10,14 +10,14 @@ def test_impute_missing_values_on_both_splits():
             "feature_2": [np.nan, 1, 2, 3],
         }
     )
-    X_test = pd.DataFrame(
+    X_val = pd.DataFrame(
         {
             "feature_1": [2, np.nan, np.nan, 4],
             "feature_2": [np.nan, 1, 2, np.nan],
         }
     )
 
-    X_train_imputed, X_test_imputed = impute_missing_values(X_train, X_test)
+    X_train_imputed, X_val_imputed = impute_missing_values(X_train, X_val)
 
     assert not np.isnan(X_train_imputed).any()
-    assert not np.isnan(X_test_imputed).any()
+    assert not np.isnan(X_val_imputed).any()
