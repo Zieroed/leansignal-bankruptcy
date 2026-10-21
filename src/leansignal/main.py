@@ -2,6 +2,7 @@ from load_data import load_data
 from audit_data import describe_data, print_first_five_rows, print_missing_values_info, print_class_distribution
 from split_data import split_data, split_train_test, print_per_class_distribution, impute_missing_values
 from dummy_classifier import predict_most_frequent
+from metrics_evaluator import compute_precision, compute_recall, compute_f1_score, compute_roc_auc, compute_average_precision, compute_accuracy
 
 def print_x_y_shapes(X_dev, X_test, y_dev, y_test, x, y):
     print(f"{x} shape: {X_dev.shape}")
@@ -18,8 +19,8 @@ def main():
     print("Loading data..")
     df = load_data()
     print("Data loaded successfully.")
-
-    while True:
+    repeat = True
+    while repeat:
         print("\nSelect an option:")
         print("1. Describe data")
         print("2. Print first 5 rows")
@@ -28,7 +29,7 @@ def main():
         print("5. Split data into train and test sets")
         print("0. Exit")
 
-        choice = input("Enter your choice: ")
+        choice = '5' #input("Enter your choice: ")
         if choice == '1':
             describe_data(df)
         elif choice == '2':
@@ -58,12 +59,21 @@ def main():
             print("Running dummy classifier on the imputed training and validation sets...")
             dummy_predictions, confusion_mat = predict_most_frequent(X_train_imputed, X_val_imputed, y_train, y_val)
 
+            print_line_separator()
+            print("Metrics for the dummy classifier:")
+            print(f"Precision score: {round(compute_precision(y_val, dummy_predictions) * 100, 2)}%")
+            print(f"Recall score: {round(compute_recall(y_val, dummy_predictions) * 100, 2)}%")
+            print(f"F1 score: {round(compute_f1_score(y_val, dummy_predictions) * 100, 2)}%")
+            print(f"ROC AUC score: {round(compute_roc_auc(y_val, dummy_predictions) * 100, 2)}%")
+            print(f"Average Precision score: {round(compute_average_precision(y_val, dummy_predictions) * 100, 2)}%")
+            print(f"Accuracy score: {round(compute_accuracy(y_val, dummy_predictions) * 100, 2)}%")
 
         elif choice == '0':
             print("Exiting...")
             break
         else:
             print("Invalid choice. Please enter a number between 1 and 5.")
+        repeat = False
 
 if __name__ == "__main__":
     main()
