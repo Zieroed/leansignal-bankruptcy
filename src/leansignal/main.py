@@ -5,6 +5,9 @@ from dummy_classifier import predict_most_frequent
 from metrics_evaluator import compute_precision, compute_recall, compute_f1_score, compute_roc_auc, compute_average_precision, compute_accuracy
 from logistic_regression import train_and_predict_logistic_regression
 from random_forest import train_and_predict_random_forest
+from sklearn.metrics import confusion_matrix
+import pandas as pd
+
 
 def print_x_y_shapes(X_dev, X_test, y_dev, y_test, x, y):
     print(f"{x} shape: {X_dev.shape}")
@@ -15,6 +18,14 @@ def print_x_y_shapes(X_dev, X_test, y_dev, y_test, x, y):
 
 def print_line_separator():
     print("=" * 50)
+    return
+
+def print_confusion_matrix(model_name, y_val, predictions, labels=[1,0]):
+    confusion_mat = confusion_matrix(y_val, predictions, labels=labels)
+    class_names = ['Bankrupt', 'Non-Bankrupt']
+    confusion_display = pd.DataFrame(confusion_mat, index=[f'T: {x}' for x in class_names], columns=[f'P: {x}' for x in class_names])
+    print(f"{model_name} Confusion Matrix:")
+    print(confusion_display)
     return
 
 def main():
@@ -59,16 +70,17 @@ def main():
 
             print_line_separator()
             print("Running dummy classifier on the imputed training and validation sets...")
-            dummy_predictions, confusion_mat = predict_most_frequent(X_train_imputed, X_val_imputed, y_train, y_val)
+            dummy_predictions = predict_most_frequent(X_train_imputed, X_val_imputed, y_train, y_val)
             dummy_prauc = compute_average_precision(y_val, dummy_predictions)
             dummy_rocauc = compute_roc_auc(y_val, dummy_predictions)
             dummy_precision = compute_precision(y_val, dummy_predictions)
             dummy_recall = compute_recall(y_val, dummy_predictions)
             dummy_f1 = compute_f1_score(y_val, dummy_predictions)
             dummy_accuracy = compute_accuracy(y_val, dummy_predictions)
+            print_confusion_matrix("Dummy", y_val, dummy_predictions)
 
             print_line_separator()
-            print("Training Logistic Regression Model")
+            print("Training Linear Regression Model")
             lr_predictions, lr_proba = train_and_predict_logistic_regression(X_train_imputed, X_val_imputed, y_train)
             lr_prauc = compute_average_precision(y_val, lr_proba[:, -1])
             lr_rocauc = compute_roc_auc(y_val, lr_proba[:, -1])
@@ -76,6 +88,7 @@ def main():
             lr_recall = compute_recall(y_val, lr_predictions)
             lr_f1 = compute_f1_score(y_val, lr_predictions)
             lr_accuracy = compute_accuracy(y_val, lr_predictions)
+            print_confusion_matrix("Linear Regression", y_val, lr_predictions)
 
             print_line_separator()
             print("Training Random Forest Classifier")
@@ -86,6 +99,7 @@ def main():
             rf_recall = compute_recall(y_val, rf_predictions)
             rf_f1 = compute_f1_score(y_val, rf_predictions)
             rf_accuracy = compute_accuracy(y_val, rf_predictions)
+            print_confusion_matrix("Random_Forest", y_val, rf_predictions)
 
             print_line_separator()
             metrics = [
