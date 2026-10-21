@@ -95,7 +95,7 @@ def main():
                 ("Precision", dummy_precision, lr_precision, rf_precision),
                 ("Recall", dummy_recall, lr_recall, rf_recall),
                 ("F1", dummy_f1, lr_f1, rf_f1),
-                ("Accuracy", dummy_accuracy, lr_accuracy, lr_accuracy),
+                ("Accuracy", dummy_accuracy, lr_accuracy, rf_accuracy),
             ]
             print("Metrics Comparison:")
             for metric, dummy, lr, rf in metrics:
