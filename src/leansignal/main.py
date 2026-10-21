@@ -1,7 +1,13 @@
 from load_data import load_data
 from audit_data import describe_data, print_first_five_rows, print_missing_values_info, print_class_distribution
 from split_data import split_data, print_per_class_distribution, impute_missing_values
-from dummy_classifier import predict_most_frequent
+
+def print_x_y_shapes(X_train, X_test, y_train, y_test):
+    print("X_train shape:", X_train.shape)
+    print("X_test shape:", X_test.shape)
+    print("y_train shape:", y_train.shape)
+    print("y_test shape:", y_test.shape)
+    return
 
 def main():
     print("Loading data..")
@@ -28,13 +34,9 @@ def main():
             print_class_distribution(df)
         elif choice == '5':
             X_train, X_test, y_train, y_test = split_data(df)
-            # print("X_train shape:", X_train.shape)
-            # print("X_test shape:", X_test.shape)
-            # print("y_train shape:", y_train.shape)
-            # print("y_test shape:", y_test.shape)
-            # print_per_class_distribution(y_train, y_test)
+            print_x_y_shapes(X_train, X_test, y_train, y_test)
+            print_per_class_distribution(y_train, y_test)
             X_train_imputed, X_test_imputed = impute_missing_values(X_train, X_test)
-            dummy_predictions = predict_most_frequent(X_train_imputed, X_test_imputed, y_train, y_test)
         elif choice == '0':
             print("Exiting...")
             break

@@ -2,17 +2,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
 import numpy as np
 
-# def split_data(df, test_size=0.2, random_state=42):
-#     X = df.iloc[:, :-1]
-#     y = df.iloc[:, -1]
-#     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
-#     return X_train, X_test, y_train, y_test
-
 def split_data(df, test_size=0.2, random_state=2026):
     X = df.iloc[:, :-1]
     y = df.iloc[:, -1]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
-    return X_train, X_test, y_train, y_test
+    X_dev, X_test, y_dev, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
+    return X_dev, X_test, y_dev, y_test
 
 def print_per_class_distribution(y_train, y_test):
     print("Train Percentage per class:")
