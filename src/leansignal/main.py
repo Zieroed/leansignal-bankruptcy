@@ -1,12 +1,16 @@
 from load_data import load_data
 from audit_data import describe_data, print_first_five_rows, print_missing_values_info, print_class_distribution
-from split_data import split_data, print_per_class_distribution, impute_missing_values
+from split_data import split_data, split_train_test, print_per_class_distribution, impute_missing_values
 
-def print_x_y_shapes(X_dev, X_test, y_dev, y_test):
-    print("X_dev shape:", X_dev.shape)
-    print("X_test shape:", X_test.shape)
-    print("y_dev shape:", y_dev.shape)
-    print("y_test shape:", y_test.shape)
+def print_x_y_shapes(X_dev, X_test, y_dev, y_test, x, y):
+    print(f"{x} shape: {X_dev.shape}")
+    print(f"{y} shape: {X_test.shape}")
+    # print("y_dev shape:", y_dev.shape)
+    # print("y_test shape:", y_test.shape)
+    return
+
+def print_line_separator():
+    print("=" * 50)
     return
 
 def main():
@@ -33,9 +37,18 @@ def main():
         elif choice == '4':
             print_class_distribution(df)
         elif choice == '5':
+            print_line_separator()
+            print("Spliting development and test sets from the original dataset...")
             X_dev, X_test, y_dev, y_test = split_data(df)
-            print_x_y_shapes(X_dev, X_test, y_dev, y_test)
-            print_per_class_distribution(y_dev, y_test)
+            print_x_y_shapes(X_dev, X_test, y_dev, y_test, "Dev", "Test")
+            print_per_class_distribution(y_dev, y_test) #80/20 bankrupt/non-bankrupt for dev and test
+
+            print_line_separator()
+            print("Splitting train and validation sets from the development set...")
+            X_train, X_val, y_train, y_val = split_train_test(X_dev, y_dev)
+            print_x_y_shapes(X_train, X_val, y_train, y_val , "Train", "Validation")
+            print_per_class_distribution(y_train, y_val)
+
         elif choice == '0':
             print("Exiting...")
             break
