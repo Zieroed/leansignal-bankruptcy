@@ -92,7 +92,7 @@ def main():
 
             print_line_separator()
             print("Training Random Forest Classifier")
-            rf_predictions, rf_proba = train_and_predict_random_forest(X_train_imputed, X_val_imputed, y_train)
+            rf_predictions, rf_proba, predictions_selected, probability_selected = train_and_predict_random_forest(X_train_imputed, X_val_imputed, y_train)
             rf_prauc = compute_average_precision(y_val, rf_proba[:, -1])
             rf_rocauc = compute_roc_auc(y_val, rf_proba[:, -1])
             rf_precision = compute_precision(y_val, rf_predictions)
@@ -102,18 +102,28 @@ def main():
             print_confusion_matrix("Random_Forest", y_val, rf_predictions)
 
             print_line_separator()
+            print("Reducing Features and Evaluating using Random Forest")
+            rf_s_prauc = compute_average_precision(y_val, probability_selected[:, -1])
+            rf_s_rocauc = compute_roc_auc(y_val, probability_selected[:, -1])
+            rf_s_precision = compute_precision(y_val, predictions_selected)
+            rf_s_recall = compute_recall(y_val, predictions_selected)
+            rf_s_f1 = compute_f1_score(y_val, predictions_selected)
+            rf_s_accuracy = compute_accuracy(y_val, predictions_selected)
+            print_confusion_matrix("Random_Forest", y_val, predictions_selected)
+
+            print_line_separator()
             metrics = [
-                ("Metric", "Dummy", "LR", "RF"),
-                ("PR-AUC", dummy_prauc, lr_prauc, rf_prauc),
-                ("ROC-AUC", dummy_rocauc, lr_rocauc, rf_rocauc),
-                ("Precision", dummy_precision, lr_precision, rf_precision),
-                ("Recall", dummy_recall, lr_recall, rf_recall),
-                ("F1", dummy_f1, lr_f1, rf_f1),
-                ("Accuracy", dummy_accuracy, lr_accuracy, rf_accuracy),
+                ("Metric", "Dummy", "LR", "RF", "RF_S"),
+                ("PR-AUC", dummy_prauc, lr_prauc, rf_prauc, rf_s_prauc),
+                ("ROC-AUC", dummy_rocauc, lr_rocauc, rf_rocauc, rf_s_rocauc),
+                ("Precision", dummy_precision, lr_precision, rf_precision, rf_s_precision),
+                ("Recall", dummy_recall, lr_recall, rf_recall, rf_s_recall),
+                ("F1", dummy_f1, lr_f1, rf_f1, rf_s_f1),
+                ("Accuracy", dummy_accuracy, lr_accuracy, rf_accuracy, rf_s_accuracy),
             ]
             print("Metrics Comparison:")
-            for metric, dummy, lr, rf in metrics:
-                print(f"{metric:<12} {dummy:<12} {lr:<12} {rf:<12}")
+            for metric, dummy, lr, rf, rf_s in metrics:
+                print(f"{metric:<12} {dummy:<12} {lr:<12} {rf:<12} {rf_s:<12}")
             
         elif choice == '0':
             print("Exiting...")
