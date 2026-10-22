@@ -1,8 +1,8 @@
-from load_data import load_data
+from load_data import load_data, save_data
 from audit_data import describe_data, print_first_five_rows, print_missing_values_info, print_class_distribution
 from split_data import split_data, split_train_test, print_per_class_distribution, impute_missing_values
 from dummy_classifier import predict_most_frequent
-from metrics_evaluator import compute_precision, compute_recall, compute_f1_score, compute_roc_auc, compute_average_precision, compute_accuracy
+from metrics_evaluator import compute_precision, compute_recall, compute_f1_score, compute_roc_auc, compute_average_precision, compute_accuracy, compute_metrics
 from logistic_regression import train_and_predict_logistic_regression
 from random_forest import train_and_predict_random_forest
 from sklearn.metrics import confusion_matrix
@@ -71,66 +71,42 @@ def main():
             print_line_separator()
             print("Running dummy classifier on the imputed training and validation sets...")
             dummy_predictions = predict_most_frequent(X_train_imputed, X_val_imputed, y_train, y_val)
-            dummy_prauc = compute_average_precision(y_val, dummy_predictions)
-            dummy_rocauc = compute_roc_auc(y_val, dummy_predictions)
-            dummy_precision = compute_precision(y_val, dummy_predictions)
-            dummy_recall = compute_recall(y_val, dummy_predictions)
-            dummy_f1 = compute_f1_score(y_val, dummy_predictions)
-            dummy_accuracy = compute_accuracy(y_val, dummy_predictions)
             print_confusion_matrix("Dummy", y_val, dummy_predictions)
 
             print_line_separator()
             print("Training Logistic Regression Model")
             lr_predictions, lr_proba = train_and_predict_logistic_regression(X_train_imputed, X_val_imputed, y_train)
-            lr_prauc = compute_average_precision(y_val, lr_proba[:, -1])
-            lr_rocauc = compute_roc_auc(y_val, lr_proba[:, -1])
-            lr_precision = compute_precision(y_val, lr_predictions)
-            lr_recall = compute_recall(y_val, lr_predictions)
-            lr_f1 = compute_f1_score(y_val, lr_predictions)
-            lr_accuracy = compute_accuracy(y_val, lr_predictions)
             print_confusion_matrix("Logistic Regression", y_val, lr_predictions)
 
             print_line_separator()
             print("Training Random Forest Classifier")
             rf_predictions, rf_proba, predictions_selected, probability_selected = train_and_predict_random_forest(X_train_imputed, X_val_imputed, y_train)
-            rf_prauc = compute_average_precision(y_val, rf_proba[:, -1])
-            rf_rocauc = compute_roc_auc(y_val, rf_proba[:, -1])
-            rf_precision = compute_precision(y_val, rf_predictions)
-            rf_recall = compute_recall(y_val, rf_predictions)
-            rf_f1 = compute_f1_score(y_val, rf_predictions)
-            rf_accuracy = compute_accuracy(y_val, rf_predictions)
             print_confusion_matrix("Random_Forest", y_val, rf_predictions)
 
             print_line_separator()
             print("Reducing Features and Evaluating using Random Forest")
-            rf_s_prauc = compute_average_precision(y_val, probability_selected[:, -1])
-            rf_s_rocauc = compute_roc_auc(y_val, probability_selected[:, -1])
-            rf_s_precision = compute_precision(y_val, predictions_selected)
-            rf_s_recall = compute_recall(y_val, predictions_selected)
-            rf_s_f1 = compute_f1_score(y_val, predictions_selected)
-            rf_s_accuracy = compute_accuracy(y_val, predictions_selected)
             print_confusion_matrix("Random_Forest", y_val, predictions_selected)
 
-            print_line_separator()
-            metrics = [
-                ("Metric", "Dummy", "LR", "RF", "RF_S"),
-                ("PR-AUC", dummy_prauc, lr_prauc, rf_prauc, rf_s_prauc),
-                ("ROC-AUC", dummy_rocauc, lr_rocauc, rf_rocauc, rf_s_rocauc),
-                ("Precision", dummy_precision, lr_precision, rf_precision, rf_s_precision),
-                ("Recall", dummy_recall, lr_recall, rf_recall, rf_s_recall),
-                ("F1", dummy_f1, lr_f1, rf_f1, rf_s_f1),
-                ("Accuracy", dummy_accuracy, lr_accuracy, rf_accuracy, rf_s_accuracy),
-            ]
-            print("Metrics Comparison:")
-            for metric, dummy, lr, rf, rf_s in metrics:
-                print(f"{metric:<12} {dummy:<12} {lr:<12} {rf:<12} {rf_s:<12}")
-            
+            print_line_separator()    
+
         elif choice == '0':
             print("Exiting...")
             break
         else:
             print("Invalid choice. Please enter a number between 1 and 5.")
         repeat = False
+
+        metrics_by_model = {
+            "Dummy": compute_metrics(y_val, dummy_predictions, dummy_predictions),
+            "Logistic Regression": compute_metrics(y_val, lr_proba, lr_predictions),
+            "Random Forest": compute_metrics(y_val, rf_proba, rf_predictions),
+            "Random Forest (32 Features)": compute_metrics(y_val, probability_selected, predictions_selected)
+        }
+        results = pd.DataFrame.from_dict(metrics_by_model, orient="index")
+        results.index.name = "Model"
+        results = results.reset_index()
+        print(results.to_string(index=False))
+        save_data(results, "baseline_results.csv")
 
 if __name__ == "__main__":
     main()

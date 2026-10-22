@@ -18,3 +18,14 @@ def compute_average_precision(y_true, y_pred):
 
 def compute_accuracy(y_true, y_pred):
     return round(accuracy_score(y_true, y_pred)* 100, 2) 
+
+def compute_metrics(y_true, y_probabilites, y_predictions):
+    y_probabilites = y_probabilites[:, -1] if y_probabilites.ndim == 2 else y_probabilites
+    return {
+        "PR-AUC": compute_average_precision(y_true, y_probabilites),
+        "ROC-AUC": compute_roc_auc(y_true, y_probabilites),
+        "Precision": compute_precision(y_true, y_predictions),
+        "Recall": compute_recall(y_true, y_predictions),
+        "F1": compute_f1_score(y_true, y_predictions),
+        "Accuracy": compute_accuracy(y_true, y_predictions),
+    }
