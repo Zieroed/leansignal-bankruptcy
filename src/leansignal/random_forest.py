@@ -2,7 +2,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_selection import SelectFromModel
 
 def feature_selection(X_train_imputed, X_val_imputed, y_train):
-    selector = SelectFromModel(RandomForestClassifier(), threshold="median").fit(X_train_imputed, y_train)
+    selector = SelectFromModel(RandomForestClassifier(random_state=42), threshold="median").fit(X_train_imputed, y_train)
     print(f"selector.threshold_: {selector.threshold_}")
     print(f"selector.getsupport(): {selector.get_support()}")
     X_train_selected = selector.transform(X_train_imputed)
