@@ -25,14 +25,14 @@ Random Forest (32 Features)
 Using SelectFromModel, a selector was trained using the training split, using a median threshold feature strategy. The first selector made from the Random Forest classifier effectively removed half of the features from 64 to 32.
 
 ## Validation Results
-# Baseline Results
+### Baseline Results
 | Model                       | Features | PR-AUC | ROC-AUC | Precision | Recall | F1    | Accuracy |
 |-----------------------------|----------|--------|---------|-----------|--------|-------|----------|
 | Dummy                       | 64       | 4.7    | 50.0    | 0.0       | 0.0    | 0.0   | 95.3     |
 | Logistic Regression         | 64       | 10.44  | 71.08   | 0.0       | 0.0    | 0.0   | 95.24    |
 | Random Forest               | 64       | 27.65  | 83.25   | 62.5      | 6.33   | 11.49 | 95.42    |
 | Random Forest (32 Features) | 32       | 30.47  | 83.71   | 77.78     | 8.86   | 15.91 | 95.6     |
-# PR-AUC Comparison
+### PR-AUC Comparison
 ![PR-AUC Comparison](results/pr_auc_comparison.png)
 
 
@@ -48,9 +48,9 @@ Validation results are not final test results; The test data split would be used
 Note: This is an educational predictive experiment and not a financial decision support system
 
 ## Reproducing the Project
-# Install dependencies:
+### Install dependencies:
 python -m pip install -r requirements.txt
 
-# Clone and run the project:
+### Clone and run the project:
 git clone https://github.com/Zieroed/leansignal-bankruptcy.git
 python src/leansignal/main.py
