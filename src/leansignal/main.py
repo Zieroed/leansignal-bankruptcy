@@ -80,7 +80,7 @@ def main():
             print_confusion_matrix("Dummy", y_val, dummy_predictions)
 
             print_line_separator()
-            print("Training Linear Regression Model")
+            print("Training Logistic Regression Model")
             lr_predictions, lr_proba = train_and_predict_logistic_regression(X_train_imputed, X_val_imputed, y_train)
             lr_prauc = compute_average_precision(y_val, lr_proba[:, -1])
             lr_rocauc = compute_roc_auc(y_val, lr_proba[:, -1])
@@ -88,7 +88,7 @@ def main():
             lr_recall = compute_recall(y_val, lr_predictions)
             lr_f1 = compute_f1_score(y_val, lr_predictions)
             lr_accuracy = compute_accuracy(y_val, lr_predictions)
-            print_confusion_matrix("Linear Regression", y_val, lr_predictions)
+            print_confusion_matrix("Logistic Regression", y_val, lr_predictions)
 
             print_line_separator()
             print("Training Random Forest Classifier")
