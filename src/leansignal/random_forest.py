@@ -19,6 +19,6 @@ def train_and_predict_random_forest(X_train_imputed, X_val_imputed, y_train):
     rf_clf_selected = RandomForestClassifier(random_state=42).fit(X_train_selected, y_train)
     predictions_selected = rf_clf_selected.predict(X_val_selected)
     probability_selected = rf_clf_selected.predict_proba(X_val_selected)
-    return predictions, probability_predictions, predictions_selected, probability_selected
+    return predictions, probability_predictions, predictions_selected, probability_selected, X_train_selected.shape[1]
 
  

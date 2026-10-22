@@ -81,7 +81,7 @@ def main():
 
             print_line_separator()
             print("Training Random Forest Classifier")
-            rf_predictions, rf_proba, predictions_selected, probability_selected = train_and_predict_random_forest(X_train_imputed, X_val_imputed, y_train)
+            rf_predictions, rf_proba, predictions_selected, probability_selected, rf_feature_count = train_and_predict_random_forest(X_train_imputed, X_val_imputed, y_train)
             print_confusion_matrix("Random_Forest", y_val, rf_predictions)
 
             print_line_separator()
@@ -99,19 +99,19 @@ def main():
 
         metrics_by_model = {
             "Dummy": {
-                "Features": 64,
+                "Features": X_train_imputed.shape[1],
                 **compute_metrics(y_val, dummy_predictions, dummy_predictions),
             },
             "Logistic Regression": {
-                "Features": 64,
+                "Features": X_train_imputed.shape[1],
                 **compute_metrics(y_val, lr_proba, lr_predictions),
             },
             "Random Forest": {
-                "Features": 64,
+                "Features": X_train_imputed.shape[1],
                 **compute_metrics(y_val, rf_proba, rf_predictions),
             },
             "Random Forest (32 Features)": {
-                "Features": 32,
+                "Features": rf_feature_count,
                 **compute_metrics(y_val, probability_selected, predictions_selected),
             },
         }
