@@ -1,5 +1,5 @@
-Model,PR-AUC,ROC-AUC,Precision,Recall,F1,Accuracy
-Dummy,4.7,50.0,0.0,0.0,0.0,95.3
-Logistic Regression,10.44,71.08,0.0,0.0,0.0,95.24
-Random Forest,27.65,83.25,62.5,6.33,11.49,95.42
-Random Forest (32 Features),30.47,83.71,77.78,8.86,15.91,95.6
+Model,Features,PR-AUC,ROC-AUC,Precision,Recall,F1,Accuracy
+Dummy,64,4.7,50.0,0.0,0.0,0.0,95.3
+Logistic Regression,64,10.44,71.08,0.0,0.0,0.0,95.24
+Random Forest,64,27.65,83.25,62.5,6.33,11.49,95.42
+Random Forest (32 Features),32,30.47,83.71,77.78,8.86,15.91,95.6

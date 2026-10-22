@@ -7,6 +7,7 @@ from logistic_regression import train_and_predict_logistic_regression
 from random_forest import train_and_predict_random_forest
 from sklearn.metrics import confusion_matrix
 import pandas as pd
+from chart import plot_bar_chart
 
 
 def print_x_y_shapes(X_dev, X_test, y_dev, y_test, x, y):
@@ -97,16 +98,29 @@ def main():
         repeat = False
 
         metrics_by_model = {
-            "Dummy": compute_metrics(y_val, dummy_predictions, dummy_predictions),
-            "Logistic Regression": compute_metrics(y_val, lr_proba, lr_predictions),
-            "Random Forest": compute_metrics(y_val, rf_proba, rf_predictions),
-            "Random Forest (32 Features)": compute_metrics(y_val, probability_selected, predictions_selected)
+            "Dummy": {
+                "Features": 64,
+                **compute_metrics(y_val, dummy_predictions, dummy_predictions),
+            },
+            "Logistic Regression": {
+                "Features": 64,
+                **compute_metrics(y_val, lr_proba, lr_predictions),
+            },
+            "Random Forest": {
+                "Features": 64,
+                **compute_metrics(y_val, rf_proba, rf_predictions),
+            },
+            "Random Forest (32 Features)": {
+                "Features": 32,
+                **compute_metrics(y_val, probability_selected, predictions_selected),
+            },
         }
         results = pd.DataFrame.from_dict(metrics_by_model, orient="index")
         results.index.name = "Model"
         results = results.reset_index()
         print(results.to_string(index=False))
         save_data(results, "baseline_results.csv")
+        plot_bar_chart(metrics_by_model)
 
 if __name__ == "__main__":
     main()
