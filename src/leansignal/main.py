@@ -4,7 +4,7 @@ from split_data import split_data, split_train_test, print_per_class_distributio
 from dummy_classifier import predict_most_frequent
 from metrics_evaluator import compute_precision, compute_recall, compute_f1_score, compute_roc_auc, compute_average_precision, compute_accuracy, compute_metrics
 from logistic_regression import train_and_predict_logistic_regression
-from random_forest import train_and_predict_random_forest
+from random_forest import train_and_predict_random_forest, train_final_rf
 from sklearn.metrics import confusion_matrix
 import pandas as pd
 from chart import plot_bar_chart
@@ -88,7 +88,14 @@ def main():
             print("Reducing Features and Evaluating using Random Forest")
             print_confusion_matrix("Random_Forest", y_val, predictions_selected)
 
-            print_line_separator()    
+            print_line_separator()
+            print("Starting Final Fitting Stage")
+            X_dev_selected, final_rf = train_final_rf(X_dev, y_dev)
+            print(f"Development shape before selection: {X_dev.shape}")
+            print(f"Development shape after selection: {X_dev_selected.shape}")
+            print(f"Selected feature count: {X_dev_selected.shape[1]}")
+            
+
 
         elif choice == '0':
             print("Exiting...")
