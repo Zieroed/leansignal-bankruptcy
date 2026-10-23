@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from load_data import PATH_ROOT
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 def plot_bar_chart(metrics_dictionary):
     models = []
@@ -18,4 +19,11 @@ def plot_bar_chart(metrics_dictionary):
 
     plt.savefig(f"{PATH_ROOT}/results/pr_auc_comparison.png", dpi=300)
 
-    
+def save_confusion_matrix(y_true, y_pred):
+    cm = confusion_matrix(y_true, y_pred, labels=[1, 0])
+
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Bankrupt', 'Non-Bankrupt'])
+    disp.plot(cmap=plt.cm.Blues)
+
+    plt.savefig(f'{PATH_ROOT}/results/final_model_confusion_matrix.png', dpi=300, bbox_inches='tight')
+    plt.close()

@@ -8,7 +8,7 @@ from random_forest import train_and_predict_random_forest, train_rf
 from sklearn.metrics import confusion_matrix
 import pandas as pd
 import numpy as np
-from chart import plot_bar_chart
+from chart import plot_bar_chart, save_confusion_matrix
 
 
 def print_x_y_shapes(X_dev, X_test, y_dev, y_test, x, y):
@@ -98,6 +98,8 @@ def main():
             print_line_separator()
             print("Starting Final Fitting Stage")
             final_predictions, final_probability_predictions, final_feature_count = train_rf(X_dev, y_dev, X_test, -np.inf, 16)
+            print_confusion_matrix("Final", y_test, final_predictions)
+            save_confusion_matrix(y_test, final_predictions)
 
             print_line_separator()
 
