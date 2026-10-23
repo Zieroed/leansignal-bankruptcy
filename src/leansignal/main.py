@@ -90,9 +90,9 @@ def main():
             print_confusion_matrix("Random_Forest", y_val, predictions_selected)
 
             print_line_separator()
-            twenty_predictions, twenty_probability_predictions, feature_count = train_rf(X_train, y_train, X_val, -np.inf, 20)
-            sixteen_predictions, sixteen_probability_predictions, feature_count = train_rf(X_train, y_train, X_val, -np.inf, 16)
-            ten_predictions, ten_probability_predictions, feature_count = train_rf(X_train, y_train, X_val, -np.inf, 10)
+            twenty_predictions, twenty_probability_predictions, twenty_feature_count = train_rf(X_train, y_train, X_val, -np.inf, 20)
+            sixteen_predictions, sixteen_probability_predictions, sixteen_feature_count = train_rf(X_train, y_train, X_val, -np.inf, 16)
+            ten_predictions, ten_probability_predictions, ten_feature_count = train_rf(X_train, y_train, X_val, -np.inf, 10)
 
             print_line_separator()
             print("Starting Final Fitting Stage")
@@ -125,15 +125,15 @@ def main():
                 **compute_metrics(y_val, probability_selected, predictions_selected),
             },
             "Random Forest (20 Features)": {
-                "Features": rf_feature_count,
+                "Features": twenty_feature_count,
                 **compute_metrics(y_val, twenty_probability_predictions, twenty_predictions),
             },
             "Random Forest (16 Features)": {
-                "Features": rf_feature_count,
+                "Features": sixteen_feature_count,
                 **compute_metrics(y_val, sixteen_probability_predictions, sixteen_predictions),
             },
             "Random Forest (10 Features)": {
-                "Features": rf_feature_count,
+                "Features": ten_feature_count,
                 **compute_metrics(y_val, ten_probability_predictions, ten_predictions),
             },
             # "Final Random Forest": {
