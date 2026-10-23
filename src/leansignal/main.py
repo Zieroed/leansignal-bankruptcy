@@ -90,11 +90,13 @@ def main():
 
             print_line_separator()
             print("Starting Final Fitting Stage")
-            X_dev_selected, final_rf = train_final_rf(X_dev, y_dev)
-            print(f"Development shape before selection: {X_dev.shape}")
-            print(f"Development shape after selection: {X_dev_selected.shape}")
-            print(f"Selected feature count: {X_dev_selected.shape[1]}")
-            
+            final_predictions, final_probability_predictions, feature_count = train_final_rf(X_dev, y_dev, X_test, y_test)
+            # final_results = {
+            #     "Final Random Forest": {
+            #         "Features": feature_count,
+            #         **compute_metrics(y_test, final_predictions, final_probability_predictions)
+            #     }
+            # }
 
 
         elif choice == '0':

@@ -22,12 +22,26 @@ def train_and_predict_random_forest(X_train_imputed, X_val_imputed, y_train):
     probability_selected = rf_clf_selected.predict_proba(X_val_selected)
     return predictions, probability_predictions, predictions_selected, probability_selected, X_train_selected.shape[1]
 
-def train_final_rf(X_dev, y_dev):
-    X_dev_imputed, _ = impute_missing_values(X_dev, X_dev) #2nd X_dev parameter does nothing
+def train_final_rf(X_dev, y_dev, X_test, y_test):
+    # Preprocess
+    X_dev_imputed, X_test_imputed = impute_missing_values(X_dev, X_test)
+
+    # Train RF Model and Feature Selector
     final_rf = RandomForestClassifier(random_state=42)
     selector = SelectFromModel(final_rf, threshold="median").fit(X_dev_imputed, y_dev)
+
+    # Feature Selection
     X_dev_selected = selector.transform(X_dev_imputed)
+    X_test_selected = selector.transform(X_test_imputed)
+    print(f"Development shape before selection: {X_dev.shape}")
+    print(f"Development shape after selection: {X_dev_selected.shape}")
+    feature_count = X_dev_selected.shape[1]
+    print(f"Selected feature count: {feature_count}")
+
+    # Prediction
     final_rf.fit(X_dev_selected, y_dev)
-    return X_dev_selected, final_rf
+    final_predictions = final_rf.predict(X_test_selected)
+    final_probability_predictions = final_rf.predict_proba(X_test_selected)
+    return X_dev_selected, final_predictions, final_probability_predictions, feature_count
 
  
