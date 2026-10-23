@@ -51,14 +51,14 @@ From the current table, accuracy can certainly be seen as uninformative and an u
 ### Feature Selection
 The first feature selection results achieved higher PR-AUC results from the baseline random forest model even though 50% of the features were removed, ~~showing how model improvements can be achieved and possibly retained through feature selection~~. Results from the PR-AUC evaluation metric showed a decline from 34.38% to 31.66% when features were reduced to 10 indicating too much feature reduction could affect prediction quality as well. Within the training and evaluation splits, the model with the top 16 remaining features achieved the highest PR-AUC result, making it the model being chosen for the final model training.
 ### Final
-The random forest model reduced the financial-ratio features from 64 to 16 through importance selection, resulting in a 75% feature reduction. The final model successfully retained prediction performance while also increasing from validation split 34.38% to 45.79% when trained and evaluated with the whole dataset split. 
+The random forest model reduced the financial-ratio features from 64 to 16 through importance selection, resulting in a 75% feature reduction. The final model increased from validation split 34.38% to 45.79% when trained and evaluated with the whole dataset split. 
 
 ## Limitations
 The dataset shows severe class imbalance and a rare positive-class
 A single train/validation split was used rather than repeated evaluation
 The models were untuned and used default thresholds when trained
 Financial-ratio features are anonymous, limiting interpretability
-Validation results are not final test results; The test data split would be used for the final test results
+Validation results are not final test results; The test data split was used for the final test results
 Final results were accidentally evaluated in early development once using a 32-feature configuration, however, no analysis was done and the result did not affect later model / feature selection decisions
 Note: This is an educational predictive experiment and not a financial decision support system
 
