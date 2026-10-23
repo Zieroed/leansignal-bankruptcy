@@ -37,7 +37,7 @@ def train_rf(X_dev, y_dev, X_test, threshold, max_features):
     print(f"Development shape after selection: {X_dev_selected.shape}")
     feature_count = X_dev_selected.shape[1]
     print(f"Selected feature count: {feature_count}")
-    print(f"Support: {selector.get_support}")
+    print(f"Support: {selector.get_support()}")
 
     # Prediction
     final_rf.fit(X_dev_selected, y_dev)
