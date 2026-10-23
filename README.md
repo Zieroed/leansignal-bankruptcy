@@ -20,24 +20,38 @@ Dummy (64 Features)
 Logistic Regression (64 Features) 
 Random Forest (64 Features)
 Random Forest (32 Features)
+Random Forest (20 Features)
+Random Forest (16 Features) / Final Model
+Random Forest (10 Features)
 
 ## Feature Selection
-Using SelectFromModel, a selector was trained using the training split, using a median threshold feature strategy. The first selector made from the Random Forest classifier effectively removed half of the features from 64 to 32.
+Using SelectFromModel, a selector was trained using the training split with a -np.inf threshold and top-k features strategy. The initial selector made from the Random Forest classifier used a median threshold strategy, effectively removing half of the features from 64 to 32. To further experiment prediction quality preservation with lower financial-ratio features, a top-k features strategy was implemented, choosing top 20, 16, and 10 features. 20 and 16 were chosen to test aggressive feature reduction while 10 was chosen as the minimum to test if results remain meaningful with a really compact feature set. These counts were pre-defined before examining evaluation results to avoid an optimistic result.
+Feature reduction: 64 -> 32 -> 20 -> 16 -> 10
 
 ## Validation Results
-### Baseline Results
-| Model                       | Features | PR-AUC | ROC-AUC | Precision | Recall | F1    | Accuracy |
-|-----------------------------|----------|--------|---------|-----------|--------|-------|----------|
-| Dummy                       | 64       | 4.7    | 50.0    | 0.0       | 0.0    | 0.0   | 95.3     |
-| Logistic Regression         | 64       | 10.44  | 71.08   | 0.0       | 0.0    | 0.0   | 95.24    |
-| Random Forest               | 64       | 27.65  | 83.25   | 62.5      | 6.33   | 11.49 | 95.42    |
-| Random Forest (32 Features) | 32       | 30.47  | 83.71   | 77.78     | 8.86   | 15.91 | 95.6     |
+### Baseline
+| Model                 | Features | PR-AUC | ROC-AUC | Precision | Recall | F1    | Accuracy |
+|-----------------------|----------|--------|---------|-----------|--------|-------|----------|
+| Dummy                 | 64       | 4.7    | 50.0    | 0.0       | 0.0    | 0.0   | 95.3     |
+| Logistic Regression   | 64       | 10.44  | 71.08   | 0.0       | 0.0    | 0.0   | 95.24    |
+| Random Forest         | 64       | 27.65  | 83.25   | 62.5      | 6.33   | 11.49 | 95.42    |
+### Feature Selection
+| Random Forest         | 32       | 30.47  | 83.71   | 77.78     | 8.86   | 15.91 | 95.6     |
+| Random Forest         | 20       | 32.7   | 81.93   | 92.31     | 15.19  | 26.09 | 95.95    |
+| Random Forest         | 16       | 34.38  | 80.72   | 92.31     | 15.19  | 26.09 | 95.95    |
+| Random Forest         | 10       | 31.66  | 80.96   | 86.67     | 16.46  | 27.66 | 95.95    |
+### Final
+| Final Random Forest   | 16       | 45.79  | 86.39   | 76.92     | 20.2   | 32.0  | 95.95    |
 ### PR-AUC Comparison
 ![PR-AUC Comparison](results/pr_auc_comparison.png)
 
-
-## Current Interpretation
-From the current table, accuracy can certainly be seen as uninformative and an unreliable metric due to the class imbalance. The three models dummy, logistic regression, and random forest acts as the baseline models and provide little to modest results respectively. The first feature selection results achieved higher PR-AUC results from the baseline random forest model even though 50% of the features were removed, --showing how model improvements can be achieved and possibly retained through feature selection--.
+## Interpretations
+### Baseline
+From the current table, accuracy can certainly be seen as uninformative and an unreliable metric due to the class imbalance. The three models dummy, logistic regression, and random forest acts as the baseline models and provide little to modest results respectively. 
+### Feature Selection
+The first feature selection results achieved higher PR-AUC results from the baseline random forest model even though 50% of the features were removed, ~~showing how model improvements can be achieved and possibly retained through feature selection~~. Results from the PR-AUC evaluation metric showed a decline from 34.38% to 31.66% when features were reduced to 10 indicating too much feature reduction could affect prediction quality as well. Within the training and evaluation splits, the model with the top 16 remaining features achieved the highest PR-AUC result, making it the model being chosen for the final model training.
+### Final
+The random forest model reduced the financial-ratio features from 64 to 16 through importance selection, resulting in a 75% feature reduction. The final model successfully retained prediction performance while also increasing from validation split 34.38% to 45.79% when trained and evaluated with the whole dataset split. 
 
 ## Limitations
 The dataset shows severe class imbalance and a rare positive-class
@@ -45,6 +59,7 @@ A single train/validation split was used rather than repeated evaluation
 The models were untuned and used default thresholds when trained
 Financial-ratio features are anonymous, limiting interpretability
 Validation results are not final test results; The test data split would be used for the final test results
+Final results were accidentally evaluated in early development once using a 32-feature configuration, however, no analysis was done and the result did not affect later model / feature selection decisions
 Note: This is an educational predictive experiment and not a financial decision support system
 
 ## Reproducing the Project
