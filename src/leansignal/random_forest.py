@@ -22,7 +22,7 @@ def train_and_predict_random_forest(X_train_imputed, X_val_imputed, y_train):
     probability_selected = rf_clf_selected.predict_proba(X_val_selected)
     return predictions, probability_predictions, predictions_selected, probability_selected, X_train_selected.shape[1]
 
-def train_final_rf(X_dev, y_dev, X_test, y_test):
+def train_final_rf(X_dev, y_dev, X_test):
     # Preprocess
     X_dev_imputed, X_test_imputed = impute_missing_values(X_dev, X_test)
 
@@ -42,6 +42,6 @@ def train_final_rf(X_dev, y_dev, X_test, y_test):
     final_rf.fit(X_dev_selected, y_dev)
     final_predictions = final_rf.predict(X_test_selected)
     final_probability_predictions = final_rf.predict_proba(X_test_selected)
-    return X_dev_selected, final_predictions, final_probability_predictions, feature_count
+    return final_predictions, final_probability_predictions, feature_count
 
  

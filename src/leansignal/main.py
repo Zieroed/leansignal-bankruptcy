@@ -90,7 +90,7 @@ def main():
 
             print_line_separator()
             print("Starting Final Fitting Stage")
-            final_predictions, final_probability_predictions, feature_count = train_final_rf(X_dev, y_dev, X_test, y_test)
+            final_predictions, final_probability_predictions, feature_count = train_final_rf(X_dev, y_dev, X_test)
             # final_results = {
             #     "Final Random Forest": {
             #         "Features": feature_count,
