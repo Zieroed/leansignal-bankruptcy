@@ -22,13 +22,13 @@ def train_and_predict_random_forest(X_train_imputed, X_val_imputed, y_train):
     probability_selected = rf_clf_selected.predict_proba(X_val_selected)
     return predictions, probability_predictions, predictions_selected, probability_selected, X_train_selected.shape[1]
 
-def train_final_rf(X_dev, y_dev, X_test):
+def train_rf(X_dev, y_dev, X_test, threshold, max_features):
     # Preprocess
     X_dev_imputed, X_test_imputed = impute_missing_values(X_dev, X_test)
 
     # Train RF Model and Feature Selector
     final_rf = RandomForestClassifier(random_state=42)
-    selector = SelectFromModel(final_rf, threshold="median").fit(X_dev_imputed, y_dev)
+    selector = SelectFromModel(final_rf, threshold=threshold, max_features=max_features).fit(X_dev_imputed, y_dev)
 
     # Feature Selection
     X_dev_selected = selector.transform(X_dev_imputed)
@@ -37,6 +37,7 @@ def train_final_rf(X_dev, y_dev, X_test):
     print(f"Development shape after selection: {X_dev_selected.shape}")
     feature_count = X_dev_selected.shape[1]
     print(f"Selected feature count: {feature_count}")
+    print(f"Support: {selector.get_support}")
 
     # Prediction
     final_rf.fit(X_dev_selected, y_dev)

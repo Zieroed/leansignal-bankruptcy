@@ -4,9 +4,10 @@ from split_data import split_data, split_train_test, print_per_class_distributio
 from dummy_classifier import predict_most_frequent
 from metrics_evaluator import compute_precision, compute_recall, compute_f1_score, compute_roc_auc, compute_average_precision, compute_accuracy, compute_metrics
 from logistic_regression import train_and_predict_logistic_regression
-from random_forest import train_and_predict_random_forest, train_final_rf
+from random_forest import train_and_predict_random_forest, train_rf
 from sklearn.metrics import confusion_matrix
 import pandas as pd
+import numpy as np
 from chart import plot_bar_chart
 
 
@@ -89,15 +90,13 @@ def main():
             print_confusion_matrix("Random_Forest", y_val, predictions_selected)
 
             print_line_separator()
-            print("Starting Final Fitting Stage")
-            final_predictions, final_probability_predictions, feature_count = train_final_rf(X_dev, y_dev, X_test)
-            # final_results = {
-            #     "Final Random Forest": {
-            #         "Features": feature_count,
-            #         **compute_metrics(y_test, final_predictions, final_probability_predictions)
-            #     }
-            # }
+            twenty_predictions, twenty_probability_predictions, feature_count = train_rf(X_train, y_train, X_val, -np.inf, 20)
 
+            print_line_separator()
+            print("Starting Final Fitting Stage")
+            final_predictions, final_probability_predictions, feature_count = train_rf(X_dev, y_dev, X_test, "median", None)
+
+            print_line_separator()
 
         elif choice == '0':
             print("Exiting...")
@@ -123,6 +122,10 @@ def main():
                 "Features": rf_feature_count,
                 **compute_metrics(y_val, probability_selected, predictions_selected),
             },
+            # "Final Random Forest": {
+            #     "Features": feature_count,
+            #     **compute_metrics(y_test, final_probability_predictions, final_predictions)
+            # }
         }
         results = pd.DataFrame.from_dict(metrics_by_model, orient="index")
         results.index.name = "Model"
