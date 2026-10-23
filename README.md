@@ -2,8 +2,6 @@
 
 ## Project Question
 How much bankruptcy-prediction performance can be retained with fewer financial-ratio features?
-How much evaluation quality can we preserve while removing features?
-Show evaluation metrics for the final result and how we can achieve modest if not best evaluation.
 
 ## Dataset
 The dataset is composed of 10,503 rows of data, 64 columns of anonymous features, and 1 target class column for the bankrupt and non-bankrupt labeled as bytes '1' and '0' respectively
