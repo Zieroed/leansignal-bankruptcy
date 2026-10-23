@@ -90,6 +90,7 @@ def main():
             print_confusion_matrix("Random_Forest", y_val, predictions_selected)
 
             print_line_separator()
+            thirtytwo_predictions, thirtytwo_probability_predictions, thirtytwo_feature_count = train_rf(X_train, y_train, X_val, -np.inf, 32)
             twenty_predictions, twenty_probability_predictions, twenty_feature_count = train_rf(X_train, y_train, X_val, -np.inf, 20)
             sixteen_predictions, sixteen_probability_predictions, sixteen_feature_count = train_rf(X_train, y_train, X_val, -np.inf, 16)
             ten_predictions, ten_probability_predictions, ten_feature_count = train_rf(X_train, y_train, X_val, -np.inf, 10)
@@ -121,8 +122,8 @@ def main():
                 **compute_metrics(y_val, rf_proba, rf_predictions),
             },
             "Random Forest (32 Features)": {
-                "Features": rf_feature_count,
-                **compute_metrics(y_val, probability_selected, predictions_selected),
+                "Features": thirtytwo_feature_count,
+                **compute_metrics(y_val, thirtytwo_probability_predictions, thirtytwo_predictions),
             },
             "Random Forest (20 Features)": {
                 "Features": twenty_feature_count,
