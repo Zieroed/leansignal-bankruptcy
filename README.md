@@ -2,18 +2,17 @@
 
 ## Project Question
 How much bankruptcy-prediction performance can be retained with fewer financial-ratio features?
-How can we prevent data leakage and avoid an optimistic model?
 
 ## Dataset
 UCI Polish Companies Bankruptcy, 3-year forecasting case
-The dataset is composed of 10,503 rows of data, 64 columns of anonymous financial-ratio features, and 1 bankruptcy target class column for the bankrupt and non-bankrupt labeled as bytes '1' and '0' respectively
+The dataset is composed of 10,503 rows of data, 64 columns of anonymous financial-ratio features, and 1 bankruptcy target class column for the bankrupt and non-bankrupt labeled as bytes '1' and '0' respectively. The ARFF dataset source stores the target column as byte labels, which are converted to integer 0 (non-bankrupt) and 1 (bankrupt) 
 The dataset include missing features/values across 44 columns
 The dataset is severely imbalanced for its class with 95.29% (10,008) non-bankrupt, and 4.71% (495) bankrupt entries
 The dataset follows an 80/20 split strategy for labeled as development and testing splits. Then the development split is further split into an 80/20 training and evaluation split for the training and evaluation of the models while leaving the 20-testing split for final evaluation.
 To address missing values within the dataset, we used SimpleImputer following the median strategy for each column. The imputer was fit using only the training split. No testing data split has been used for imputer and evaluation model trainings. This is to prevent the models from being optimistic and seeing values from the testing data.
 
 ## Evaluation Strategy
-Due to the severe imbalance in class, misleading accuracy, rare positive class, and the goal of evaluating positive-class ranking/performance and prediction quality. Hence, we will use PR-AUC as our primary metric in accordance with the dataset and goals, supported by the ROC_AUC, Precision, Recall, and F1. Accuracy is still reported but not as a primary metric. Hence, we will use PR-AUC as our primary metric in accordance with the dataset and goals, supported by the ROC_AUC, Precision, Recall, and F1.
+Due to the severe imbalance in class, misleading accuracy, rare positive class, and the goal of evaluating positive-class ranking/performance and prediction quality. Hence, we will use PR-AUC as our primary metric in accordance with the dataset and goals, supported by the ROC_AUC, Precision, Recall, and F1. Accuracy is still reported but not as a primary metric.
 
 ## Models
 Dummy (64 Features)
