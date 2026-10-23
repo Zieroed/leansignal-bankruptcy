@@ -97,7 +97,7 @@ def main():
 
             print_line_separator()
             print("Starting Final Fitting Stage")
-            # final_predictions, final_probability_predictions, feature_count = train_rf(X_dev, y_dev, X_test, "median", None)
+            final_predictions, final_probability_predictions, final_feature_count = train_rf(X_dev, y_dev, X_test, -np.inf, 16)
 
             print_line_separator()
 
@@ -137,10 +137,10 @@ def main():
                 "Features": ten_feature_count,
                 **compute_metrics(y_val, ten_probability_predictions, ten_predictions),
             },
-            # "Final Random Forest": {
-            #     "Features": feature_count,
-            #     **compute_metrics(y_test, final_probability_predictions, final_predictions)
-            # }
+            "Final Random Forest": {
+                "Features": final_feature_count,
+                **compute_metrics(y_test, final_probability_predictions, final_predictions)
+            }
         }
         results = pd.DataFrame.from_dict(metrics_by_model, orient="index")
         results.index.name = "Model"
