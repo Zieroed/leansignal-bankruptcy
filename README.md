@@ -1,4 +1,4 @@
-# LeanSignal Bankruptcy
+# LeanSignal: Bankruptcy Prediction with Fewer Financial Ratios
 
 ## Project Question
 How much bankruptcy-prediction performance can be retained with fewer financial-ratio features?
